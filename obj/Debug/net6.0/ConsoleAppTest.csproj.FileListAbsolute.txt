@@ -1,0 +1,15 @@
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/bin/Debug/net6.0/ConsoleAppTest
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/bin/Debug/net6.0/ConsoleAppTest.deps.json
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/bin/Debug/net6.0/ConsoleAppTest.runtimeconfig.json
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/bin/Debug/net6.0/ConsoleAppTest.dll
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/bin/Debug/net6.0/ref/ConsoleAppTest.dll
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/bin/Debug/net6.0/ConsoleAppTest.pdb
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/obj/Debug/net6.0/ConsoleAppTest.csproj.AssemblyReference.cache
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/obj/Debug/net6.0/ConsoleAppTest.GeneratedMSBuildEditorConfig.editorconfig
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/obj/Debug/net6.0/ConsoleAppTest.AssemblyInfoInputs.cache
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/obj/Debug/net6.0/ConsoleAppTest.AssemblyInfo.cs
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/obj/Debug/net6.0/ConsoleAppTest.csproj.CoreCompileInputs.cache
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/obj/Debug/net6.0/ConsoleAppTest.dll
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/obj/Debug/net6.0/ref/ConsoleAppTest.dll
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/obj/Debug/net6.0/ConsoleAppTest.pdb
+/run/media/mattia/Volume/Lavoro/ConsoleAppTest/obj/Debug/net6.0/ConsoleAppTest.genruntimeconfig.cache
