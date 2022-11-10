@@ -50,7 +50,7 @@ public class Torre : Pezzo
     {
         List<Posizione> pos=base.CercaMosse();
 
-        Posizione contr=null;
+        Posizione contr;
         short i=0;
         //Cerca x+
         while(true)
@@ -114,7 +114,7 @@ public class Cavallo : Pezzo
     {
         List<Posizione> pos=base.CercaMosse();
 
-        Posizione contr=null;
+        Posizione contr;
         short x,y;
 
         //Cerca x+
@@ -187,7 +187,7 @@ public class Alfiere : Pezzo
     {
         List<Posizione> pos=base.CercaMosse();
 
-        Posizione contr=null;
+        Posizione contr;
         short x,y;
 
         x=0;
@@ -257,7 +257,7 @@ public class Regina : Pezzo
     {
         List<Posizione> pos=base.CercaMosse();
 
-        Posizione contr=null;
+        Posizione contr;
         short x,y,i;
 
         /**TORRE**/
@@ -385,11 +385,10 @@ public class Re : Pezzo
     {
         List<Posizione> pos=base.CercaMosse();
 
-        Posizione contr=null;
+        Posizione contr;
         short x,y,i;
         /**TORRE**/
 
-        t1:
         //Cerca x+
         i=0;
         contr=posizione.SerchPos(++i,0);

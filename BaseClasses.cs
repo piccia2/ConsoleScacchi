@@ -3,12 +3,10 @@ using System.Linq;
  public class Tavolo : List<Posizione>
  {
     public Squadra Bianco,Nero;
-    public Squadra turno=null;
     public Tavolo()
     {
         Bianco  = new Squadra(this,Squadra.Colore.BIANCO);
         Nero    = new Squadra(this,Squadra.Colore.NERO);
-        turno=Bianco;
         PulisciTavolo();
         PosizionaPezzi();
     }
@@ -79,34 +77,71 @@ using System.Linq;
         GetPosition('h',7).pezzo=new Pedone(this,Nero);
     }
 
-    public bool MakeMove(String from, String To)
+    public bool MakeMove(String from, String To,Squadra turno, out Tuple<Posizione,Pezzo,Posizione,Pezzo> result)
     {
         Posizione pFrom=GetPosition(from);
         Posizione pTo = GetPosition(To);
 
+        return MakeMove(pFrom,pTo,turno, out result);
+    }
+    public bool ForceMakeMove(Posizione pFrom, Posizione pTo, out Tuple<Posizione,Pezzo,Posizione,Pezzo> result)
+    {
+        result = null;
         if(pFrom==null || pTo==null)
             return false;
         
-        Pezzo pz=pFrom.pezzo;
+        Pezzo? pz=pFrom.pezzo;
+
+        if(pz==null)
+            return false;
+           
+        result=new Tuple<Posizione, Pezzo, Posizione, Pezzo>(pFrom,pz,pTo,pTo.pezzo);
+        pz.posizione=pTo;
+        return true;
+        
+    }
+    public bool MakeMove(Posizione pFrom, Posizione pTo,Squadra turno, out Tuple<Posizione,Pezzo,Posizione,Pezzo> result)
+    {
+        result=null;
+        if(pFrom==null || pTo==null)
+            return false;
+        
+        Pezzo? pz=pFrom.pezzo;
 
         if(pz==null)
             return false;
             
         if(pz.squadra!=turno)
             return false;
+
         if(pz.CercaMosse().Contains(pTo))
         {
+            result=new Tuple<Posizione, Pezzo, Posizione, Pezzo>(pFrom,pz,pTo,pTo.pezzo);
             pz.posizione=pTo;
+
             return true;
         }
         return false;
+    }
+    public void BackMove(String from, String To,Pezzo Restorepezzo)
+    {
+        Posizione pFrom=GetPosition(from);
+        Posizione pTo = GetPosition(To);
+
+        BackMove(pFrom,pTo,Restorepezzo);
+    }
+    public void BackMove(Posizione pFrom, Posizione pTo,Pezzo Restorepezzo)
+    {
+        Pezzo pz=pFrom.pezzo;
+        pz.posizione=pTo;
+        pFrom.pezzo=Restorepezzo;
     }
  }
  public class Posizione
  {
     int m_y=1;
     char m_x='a';
-    public Pezzo m_pezzo=null;
+    public Pezzo? m_pezzo=null;
     public Tavolo tavolo {get;set;}
     public int y{
         get=>m_y;
@@ -148,7 +183,7 @@ using System.Linq;
     public Tavolo tavolo {get;private set;}
     public Squadra squadra {get;private set;}
     public Posizione posizione{
-        get=>tavolo.FirstOrDefault(x=>x.pezzo==this);
+        get=>tavolo.First(x=>x.pezzo==this);
         set{
             if(value!=null)
                 value.pezzo=this; 
@@ -181,16 +216,35 @@ using System.Linq;
     public int direzionePedoni{get=>colore==Colore.BIANCO ? 1 : -1; }
     public Squadra Avversario{get=>colore==Colore.BIANCO ? tavolo.Nero : tavolo.Bianco; } 
     public List<Posizione> MosseDisponibili{get=>pezzi
-                                                    .SelectMany(x=>x.CercaMosse())
+                                                    .SelectMany(x=>x!.CercaMosse())
                                                     .ToList();}
 
     public IEnumerable<Pezzo?> pezzi{get=>tavolo
                                     .Where(x=>x!=null)
                                     .Select(x=>x.pezzo)
                                     .Where(x=>x!=null)
-                                    .Where(x=>x.squadra==this);}
-    public Re re{get=>(Re)pezzi.FirstOrDefault(x=>typeof(Re)==x.GetType());}
-    public bool inScacco{get=>MosseDisponibili.Any(x=>Avversario.MosseDisponibili.Any(x=>x.pezzo==Avversario.re));}
+                                    .Where(x=>x!.squadra==this);}
+    public Re? re{ get=>(Re)pezzi.First(x=>typeof(Re)==x!.GetType());}
+    public bool inScacco{ get=>Avversario.MosseDisponibili.Any(x=>x.pezzo==re);}
+    public bool inScaccoMatto{ get=>inScacco && !CanMove(); }
+    public bool CanMove()
+    {
+        foreach(var m in pezzi)
+        {
+            foreach(var p in m.CercaMosse())
+            {
+                Pezzo pz=p.pezzo;
+                Tuple<Posizione,Pezzo,Posizione,Pezzo> mv=null;
+                if(tavolo.ForceMakeMove(m.posizione,p, out mv))
+                {
+                    tavolo.BackMove(mv.Item3,mv.Item1,mv.Item4);
+                    return true;
+                }    
+            }
+            
+        }
+        return false;
+    }
     public Squadra(Tavolo tavolo,Colore col)
     {
         this.tavolo=tavolo;
